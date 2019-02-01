@@ -534,12 +534,17 @@ class ShowDebug():
 
     def print_debug(self, e):
         try:
+            self.msg.config(state = tk.NORMAL)
             if self.int > 100:
                 self.int = 0
                 self.msg.delete('1.0', tk.END)
             self.int += 1
             self.msg.insert('1.0', time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + e + '\n')
+            
         except Exception as e:
+            pass
+        finally:
+            self.msg.config(state = tk.DISABLED)
             pass
 
     def exit(self):
