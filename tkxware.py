@@ -157,11 +157,11 @@ class DelTask():
     def submit(self):
         ask = tk.messagebox.askyesnocancel('提示', '是否保留磁盘文件？', parent = self.root)
         if ask:
-            deleteFile = '1'
+            deleteFile = 0
         elif ask == None:
             return
         else:
-            deleteFile = '0'
+            deleteFile = 1
         try:
             url = '%s:%s/del?tasks=%s&v=2&deleteFile=%s' % (ServerUrl, ServerPort, str(self.id.get()), str(deleteFile))
             if Debug: show_debug.print_debug('[Url][%s] %s'%(self.__class__.__name__, url))
@@ -169,6 +169,7 @@ class DelTask():
             for i, v in enumerate(result['tasks']):
                 if v['result'] == 0:
                     tk.messagebox.showinfo('提示', '删除任务成功', parent=self.root)
+                    self.exit()
                 elif ResCode.get(v['result']) == None:
                     raise MyException('其它错误' + str(v['result']))
                 else:
@@ -268,6 +269,7 @@ class StopTask():
             for i, v in enumerate(result['tasks']):
                 if v['result'] == 0:
                     tk.messagebox.showinfo('提示', '暂停下载成功', parent=self.root)
+                    self.exit()
                 elif ResCode.get(v['result']) == None:
                     raise MyException('其它错误' + str(v['result']))
                 else:
