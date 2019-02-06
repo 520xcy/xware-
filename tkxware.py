@@ -178,7 +178,7 @@ class DelTask():
             tk.messagebox.showerror('出错啦', e.message, parent=self.root)
 
     def exit(self):
-        self.win_conn.destroy()
+        self.root.destroy()
 
 class StartTask():
 
@@ -278,7 +278,7 @@ class StopTask():
             tk.messagebox.showerror('出错啦', e.message, parent=self.root)
 
     def exit(self):
-        self.win_conn.destroy()
+        self.root.destroy()
 
 class SetConn():
     def __init__(self):
