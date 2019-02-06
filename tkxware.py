@@ -394,8 +394,11 @@ class AddTask():
         
         self.targetUrl = tk.scrolledtext.ScrolledText(self.root, width = 67, height = 15)
         self.targetUrl.grid(row = 3, column = 1, columnspan = 2, padx = 5, pady = 5)
-        clipboard_text = self.root.clipboard_get()
-        if clipboard_text.startswith('magnet:') or clipboard_text.startswith('ed2k://') or clipboard_text.startswith('http://') or clipboard_text.startswith('https://'): self.targetUrl.insert(tk.INSERT, clipboard_text)
+        try: 
+            clipboard_text = self.root.clipboard_get()
+            if clipboard_text.startswith('magnet:') or clipboard_text.startswith('ed2k://') or clipboard_text.startswith('http://') or clipboard_text.startswith('https://'): self.targetUrl.insert(tk.INSERT, clipboard_text)
+        except Exception as e:
+            pass
         self.rightmenu = tk.Menu(self.root,tearoff=0)
         self.rightmenu.add_command(label="复制", command = self.onCopy)
         self.rightmenu.add_command(label="粘贴", command = self.onPaste)
