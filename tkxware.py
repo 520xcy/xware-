@@ -466,7 +466,7 @@ class AddTask():
         except Exception as e:
             tk.messagebox.showerror(title = '出错啦', message = e.message, parent=self.root)
 
-    def getName(self, event):
+    def getName(self, event = ''):
         try:
             url = self.targetUrl.get('1.0', '1.end')
             if len(url) < 1: return #text即使空白也含有一个字符
