@@ -108,7 +108,7 @@ def get_list():
         except Exception as e:
             tk.messagebox.showerror(title = '出错啦', message = e.message, parent = win_root)
             break;
-        sleep(1)
+        sleep(10)
 
 def DebugType():
     global Debug
@@ -383,7 +383,7 @@ class AddTask():
         self.root = tk.Toplevel()
         self.root.title('Xware链接参数')
         # self.root.attributes('-alpha',0.8)
-        ui.center_window(self.root, 800, 360)
+        ui.center_window(self.root, 500, 360)
         self.root.resizable(False, False)
         self.root.attributes("-topmost", 1)
         targetUrlL = tk.Label(self.root,
