@@ -1,9 +1,7 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Date    : 2019-01-28 12:09:57
 # @Author  : TsiayauHsiang (tsiayauhsiang@gmail.com)
 # @Version : 0.1
-# coding=utf-8
 # 
 import os
 import urllib.parse
@@ -16,7 +14,7 @@ from time import ctime,sleep
 
 ServerUrl = 'http://192.168.12.248'
 ServerPort = '9000'
-#Debug = True
+# Debug = True
 Debug = False
 
 def _async_raise(tid, exctype):
@@ -200,9 +198,12 @@ def add_task():
         break
     tname = input('默认文件名:' + name + '\n不修改请留空:')
     name = urllib.parse.quote(name) if len(tname) == 0 else urllib.parse.quote(tname)
+    url = urllib.parse.quote(url)
+    path = urllib.parse.quote(path)
     TargetUrl = ServerUrl + ':' + ServerPort + '/createOne?v=2&type=1&url=' + url + '&path=' + path + '&name=' + name + '&fixed_id=1'
     if Debug: print(TargetUrl)
     req = urllib.request.Request(TargetUrl)
+    print(req)
     with urllib.request.urlopen(req) as response:
         result = response.read().decode('utf-8')
         result = json.loads(urllib.parse.unquote(result))

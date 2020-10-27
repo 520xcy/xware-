@@ -1,9 +1,7 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Date    : 2019-01-28 12:09:57
 # @Author  : TsiayauHsiang (tsiayauhsiang@gmail.com)
 # @Version : 0.1
-# coding=utf-8
 #
 import os
 import tkinter as tk
@@ -385,7 +383,7 @@ class AddTask():
         self.root = tk.Toplevel()
         self.root.title('Xware链接参数')
         # self.root.attributes('-alpha',0.8)
-        ui.center_window(self.root, 500, 360)
+        ui.center_window(self.root, 800, 360)
         self.root.resizable(False, False)
         self.root.attributes("-topmost", 1)
         targetUrlL = tk.Label(self.root,
