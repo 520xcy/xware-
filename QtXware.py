@@ -103,16 +103,16 @@ class NetWorking():
         try:
             result = self.conn(url)
             for i, v in enumerate(result['tasks']):
-                state = StateCode[str(v['state'])] if str(
-                    v['state']) in StateCode else u'错误' + str(v['state'])
+                # state = StateCode[str(v['state'])] if str(
+                #     v['state']) in StateCode else u'错误' + str(v['state'])
                 items = QtWidgets.QTreeWidgetItem(root.complate)
                 items.setText(0, str(v['id']))
                 items.setText(1, v['name'])
-                items.setText(2, state)
-                items.setText(3, '%.2fG' % (int(v['size'])/1024/1024/1024))
-                items.setText(4, str(timedelta(seconds=v['downTime'])))
-                items.setText(5, datetime.fromtimestamp(v['createTime']).strftime('%Y-%m-%d %H:%M:%S'))
-                items.setText(6, datetime.fromtimestamp(v['completeTime']).strftime('%Y-%m-%d %H:%M:%S'))
+                # items.setText(2, state)
+                items.setText(2, '%.2fG' % (int(v['size'])/1024/1024/1024))
+                items.setText(3, str(timedelta(seconds=v['downTime'])))
+                items.setText(4, datetime.fromtimestamp(v['createTime']).strftime('%Y-%m-%d %H:%M:%S'))
+                items.setText(5, datetime.fromtimestamp(v['completeTime']).strftime('%Y-%m-%d %H:%M:%S'))
                 # items = QtGui.QStandardItem(u'ID:%s 进度:%s 大小:%.2fG %s 速度:%.2f KB/s 任务名:%s' % (str(v['id']), str(
                 #     v['progress']/100), (int(v['size'])/1024/1024/1024), state, int(v['speed'])/1024, v['name']))
                 # root.complatedata.appendRow(items)
@@ -129,34 +129,35 @@ class NetWorking():
     def getRunList(self):
         url = r'%s:%s/list?v=2&type=0&pos=0&number=999999&needUrl=1&abs_path=1&fixed_id=0' % (
             self.host, self.port)
-        # items = ''
-        while root.runlist.topLevelItemCount():
-            item = QtWidgets.QTreeWidgetItem(root.runlist.takeTopLevelItem(0))
-            del item
+        items = ''
+        # while root.runlist.topLevelItemCount():
+        #     item = QtWidgets.QTreeWidgetItem(root.runlist.takeTopLevelItem(0))
+        #     del item
         try:
             result = self.conn(url)
             for i, v in enumerate(result['tasks']):
-                # state = StateCode[str(v['state'])] if str(
-                #     v['state']) in StateCode else u'错误' + str(v['state'])
-                # items += u'ID:%s 进度:%s 大小:%.2fG %s 速度:%.2f KB/s 任务名:%s\n\r' % (str(v['id']), str(
-                #     v['progress']/100), (int(v['size'])/1024/1024/1024), state, int(v['speed'])/1024, v['name'])
-                items = QtWidgets.QTreeWidgetItem(root.runlist)
-                items.setText(0, str(v['id']))
-                items.setText(1, v['name'])
-                items.setText(2, '%.2f' % (int(v['progress'])/100))
-                items.setText(3, '%.2fG' % (int(v['size'])/1024/1024/1024))
-                items.setText(4, datetime.fromtimestamp(v['createTime']).strftime('%Y-%m-%d %H:%M:%S'))
-                items.setText(5, str(timedelta(seconds=v['downTime'])))
-                items.setText(6, str(timedelta(seconds=int(v['remainTime']))))
+                state = StateCode[str(v['state'])] if str(
+                    v['state']) in StateCode else u'错误' + str(v['state'])
+                items += u'ID:%s 任务名:%s 状态:%s 进度:%s 大小:%.2fG 速度:%.2f KB/s 剩余时间:%s 创建时间:%s 下载时间:%s\n\r\n\r' % (str(v['id']), v['name'], state, str(
+                    v['progress']/100), (int(v['size'])/1024/1024/1024), int(v['speed'])/1024, str(timedelta(seconds=int(v['remainTime']))), datetime.fromtimestamp(v['createTime']).strftime('%Y-%m-%d %H:%M:%S'),str(timedelta(seconds=v['downTime'])))
+                # items = QtWidgets.QTreeWidgetItem(root.runlist)
+                # items.setText(0, str(v['id']))
+                # items.setText(1, v['name'])
+                # items.setText(2, state)
+                # items.setText(3, '%.2f' % (int(v['progress'])/100))
+                # items.setText(4, '%.2fG' % (int(v['size'])/1024/1024/1024))
+                # items.setText(5, datetime.fromtimestamp(v['createTime']).strftime('%Y-%m-%d %H:%M:%S'))
+                # items.setText(6, str(timedelta(seconds=v['downTime'])))
+                # items.setText(7, str(timedelta(seconds=int(v['remainTime']))))
 
         except Exception as e:
-            # items = u'数据返回错误'
-            items = QtWidgets.QTreeWidgetItem(root.complate)
-            items.setText(0,'')
-            items.setText(1, u'数据返回错误')
-            items.setText(2, str(e))
+            items = u'数据返回错误'
+            # items = QtWidgets.QTreeWidgetItem(root.complate)
+            # items.setText(0,'')
+            # items.setText(1, u'数据返回错误')
+            # items.setText(2, str(e))
             pass
-        # root.runlist.setText(items)
+        root.runlist.setText(items)
 
         root.listTimer = threading.Timer(5, net.getRunList)
         root.listTimer.setDaemon(True)
@@ -661,7 +662,7 @@ class App(QtWidgets.QMainWindow):
 
         option = menu.addMenu(u'设置')
         editconn = QtWidgets.QAction(u'设置链接',option,StatusTip='设置xware服务器地址和端口')
-        editconn.setShortcut(QtCore.Qt.CTRL | QtCore.Qt.Key_S)
+        editconn.setShortcut(QtCore.Qt.CTRL | QtCore.Qt.Key_O)
         editconn.triggered.connect(self.setConn)
         option.addAction(editconn)
 
@@ -677,21 +678,21 @@ class App(QtWidgets.QMainWindow):
         title.setText(u'未完成任务')
         title.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
 
-        # self.runlist = QtWidgets.QLabel()
-        # self.runlist.setWordWrap(True)
-        # self.runlist.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
+        self.runlist = QtWidgets.QLabel()
+        self.runlist.setWordWrap(True)
+        self.runlist.setAlignment(QtCore.Qt.AlignTop | QtCore.Qt.AlignLeft)
 
-        self.runlist = QtWidgets.QTreeWidget()
-        header = QtWidgets.QTreeWidgetItem([u'ID',u'任务名',u'状态',u'进度',u'大小',u'开始时间',u'已下载时间',u'剩余时间'])
-        self.runlist.setHeaderItem(header)
-        self.runlist.header().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
+        # self.runlist = QtWidgets.QTreeWidget()
+        # header = QtWidgets.QTreeWidgetItem([u'ID',u'任务名',u'状态',u'进度',u'大小',u'开始时间',u'已下载时间',u'剩余时间'])
+        # self.runlist.setHeaderItem(header)
+        # self.runlist.header().setSectionResizeMode(QtWidgets.QHeaderView.ResizeToContents)
 
         layout = QtWidgets.QVBoxLayout()
         layout.addWidget(title)
-        # layout.setStretchFactor(title, 1)
+        layout.setStretchFactor(title, 1)
 
         layout.addWidget(self.runlist)
-        # layout.setStretchFactor(self.runlist, 9)
+        layout.setStretchFactor(self.runlist, 9)
 
         self.runlayout = QtWidgets.QWidget(self)
         self.runlayout.setLayout(layout)
