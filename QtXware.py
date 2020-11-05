@@ -752,6 +752,9 @@ class App(QtWidgets.QMainWindow):
         
         self.show()
 
+    def closeEvent(self, event):
+        sys.exit()
+
 class DebugWindow(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
